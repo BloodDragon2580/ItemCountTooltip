@@ -1,6 +1,6 @@
 ## Interface: 90001
 ## Title: |cffd6266cItemCountTooltip|r
-## Version: 2.0
+## Version: 2.1
 ## Notes: ItemCountTooltip
 ## Author: BloodDragon2580
 ## SavedVariables: ICT_DB
@@ -8,6 +8,7 @@
 Locales/enUS.lua
 Locales/zhCN.lua
 Locales/deDE.lua
+Locales/ruRU.lua
 
 Core.lua
 Bags.lua
