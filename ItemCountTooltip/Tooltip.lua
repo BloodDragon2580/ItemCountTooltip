@@ -16,7 +16,8 @@ local function GameTooltip_OnTooltipSetItem(tt)
         tt.counted = true
     end
 end
-GameTooltip:HookScript("OnTooltipSetItem", GameTooltip_OnTooltipSetItem)
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, GameTooltip_OnTooltipSetItem)
+
 
 local function GameTooltip_OnTooltipCleared(tt)
     tt.counted = false
@@ -36,4 +37,4 @@ local function ItemRefTooltip_OnTooltipSetItem(tt)
 
     tt:Show()
 end
-ItemRefTooltip:HookScript("OnTooltipSetItem", ItemRefTooltip_OnTooltipSetItem)
+ItemRefTooltip:HookScript("GameTooltip_OnTooltipSetItem", ItemRefTooltip_OnTooltipSetItem)

@@ -6,8 +6,8 @@ local temp = {}
 function ICT:BAG_UPDATE_DELAYED()
     wipe(temp)
     for bag = 0, 4 do
-        for slot = 1, GetContainerNumSlots(bag) do
-            local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
+        for slot = 1, C_Container.GetContainerNumSlots(bag) do
+            local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = C_Container.GetContainerItemInfo(bag, slot)
             if itemID then
                 if not temp[itemID] then
                     temp[itemID] = {}
