@@ -1,6 +1,6 @@
 local addonName, ICT = ...
 
-local function GameTooltip_OnTooltipSetItem(tt)
+local function OnTooltipSetItem(tt)
     if not tt.counted then
         local _, link = tt:GetItem()
         if not link then return end
@@ -16,9 +16,16 @@ local function GameTooltip_OnTooltipSetItem(tt)
         tt.counted = true
     end
 end
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, GameTooltip_OnTooltipSetItem)
 
-
+if TooltipDataProcessor then
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, OnTooltipSetItem)
+else
+    GameTooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
+    ItemRefTooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
+    if GameTooltip.ItemTooltip then
+        GameTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
+    end
+end
 local function GameTooltip_OnTooltipCleared(tt)
     tt.counted = false
 end
@@ -37,4 +44,3 @@ local function ItemRefTooltip_OnTooltipSetItem(tt)
 
     tt:Show()
 end
-ItemRefTooltip:HookScript("GameTooltip_OnTooltipSetItem", ItemRefTooltip_OnTooltipSetItem)
