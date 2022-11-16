@@ -82,7 +82,6 @@ local function CountOnCurrentCharacter(id)
     local bank = GetItemCount(id, true) - bags
     local result = {}
 
-
     if ICT_DB[ICT.realm][ICT.name]["equipped"][id] then
         equipped = ICT_DB[ICT.realm][ICT.name]["equipped"][id][1]
         table.insert(result, L["Equipped"] .. ": " .. equipped)
@@ -118,7 +117,6 @@ local function CountOnCurrentCharacter(id)
         end
     end
 end
-
 
 function ICT:Count(id)
     local result = {}

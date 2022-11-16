@@ -6,12 +6,11 @@ local temp = {}
 local function ScanEquipped()
     wipe(temp)
     for i = 1, 18 do
-        local itemLink = GetInventoryItemLink("player", i)
         local itemID = GetInventoryItemID("player", i)
-        local itemQuality = GetInventoryItemQuality("player", i)
+        local itemLink = GetInventoryItemLink("player", i)
         local itemIcon = GetInventoryItemTexture("player", i)
-        if itemLink and itemID and itemQuality and itemIcon then
-            -- print(itemLink.." "..itemID.." "..itemQuality.." "..itemIcon)
+        local itemQuality = GetInventoryItemQuality("player", i)
+        if itemID and itemLink and itemIcon and itemQuality then
             if not temp[itemID] then
                 temp[itemID] = {}
                 temp[itemID][1] = 1
