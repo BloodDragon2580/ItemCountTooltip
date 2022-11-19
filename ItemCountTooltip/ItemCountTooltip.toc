@@ -1,6 +1,6 @@
 ## Interface: 100002
 ## Title: |cffd6266cItemCountTooltip|r
-## Version: 3.7
+## Version: 3.8
 ## Notes: ItemCountTooltip
 ## Author: BloodDragon2580
 ## SavedVariables: ICT_DB
@@ -9,6 +9,7 @@ Locales/enUS.lua
 Locales/zhCN.lua
 Locales/deDE.lua
 Locales/ruRU.lua
+Locales/koKR.lua
 
 ItemCountTooltip.lua
 settings/Bags.lua

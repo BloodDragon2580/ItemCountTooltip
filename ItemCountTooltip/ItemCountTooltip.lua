@@ -119,6 +119,8 @@ local function CountOnCurrentCharacter(id)
 end
 
 function ICT:Count(id)
+    if not ICT_DB[ICT.realm] then return end
+
     local result = {}
     for name, t in pairs(ICT_DB[ICT.realm]) do
         if name ~= ICT.name and t["faction"] == ICT.faction then
