@@ -2,7 +2,8 @@ local _, ICT = ...
 
 ICT:RegisterEvent("BANKFRAME_OPENED")
 ICT:RegisterEvent("BANKFRAME_CLOSED")
-ICT:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
+-- Removed old, invalid event
+-- ICT:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 ICT:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 ICT:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
 
@@ -29,16 +30,13 @@ local isBankOpen, updateRequired
 local function ScanBank()
     if isBankOpen then
         updateRequired = false
-
         wipe(temp)
 
         for bag = 6, GetNumBankSlots()+5 do
             ScanBankBag(bag)
         end
-
-        ScanBankBag(-1)
-
-        ScanBankBag(-3)
+        ScanBankBag(-1)  -- Main bank
+        ScanBankBag(-3)  -- Reagent bank
 
         for _, slot in ipairs(bags) do
             local info = C_Container.GetContainerItemInfo(-4, slot)
@@ -71,12 +69,7 @@ function ICT:BANKFRAME_CLOSED()
 end
 
 local timer
-function ICT:PLAYERBANKBAGSLOTS_CHANGED()
-    if timer then
-        timer:Cancel()
-    end
-    timer = C_Timer.NewTimer(0.5, ScanBank)
-end
+-- Removed: function ICT:PLAYERBANKBAGSLOTS_CHANGED() – obsolete event
 
 function ICT:BAG_UPDATE_DELAYED2()
     if timer then
