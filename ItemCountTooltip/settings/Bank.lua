@@ -2,13 +2,12 @@ local _, ICT = ...
 
 ICT:RegisterEvent("BANKFRAME_OPENED")
 ICT:RegisterEvent("BANKFRAME_CLOSED")
--- Removed old, invalid event
--- ICT:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 ICT:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
-ICT:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED")
+-- Hinweis: PLAYERBANKBAGSLOTS_CHANGED und PLAYERREAGENTBANKSLOTS_CHANGED existieren nicht mehr in The War Within
 
 local bags = {1, 2, 3, 4, 5, 6, 7}
 local temp = {}
+
 local function ScanBankBag(bag)
     for slot = 1, C_Container.GetContainerNumSlots(bag) do
         local info = C_Container.GetContainerItemInfo(bag, slot)
@@ -32,12 +31,18 @@ local function ScanBank()
         updateRequired = false
         wipe(temp)
 
-        for bag = 6, GetNumBankSlots()+5 do
+        -- Normale Bankslots
+        for bag = 6, GetNumBankSlots() + 5 do
             ScanBankBag(bag)
         end
-        ScanBankBag(-1)  -- Main bank
-        ScanBankBag(-3)  -- Reagent bank
 
+        -- Hauptbankfach
+        ScanBankBag(-1)
+
+        -- Reagenzienbank
+        ScanBankBag(-3)
+
+        -- Banktaschen-Slots selbst
         for _, slot in ipairs(bags) do
             local info = C_Container.GetContainerItemInfo(-4, slot)
             if info and info.itemID and info.hyperlink and info.iconFileID and info.quality then
@@ -69,7 +74,6 @@ function ICT:BANKFRAME_CLOSED()
 end
 
 local timer
--- Removed: function ICT:PLAYERBANKBAGSLOTS_CHANGED() – obsolete event
 
 function ICT:BAG_UPDATE_DELAYED2()
     if timer then
@@ -79,13 +83,6 @@ function ICT:BAG_UPDATE_DELAYED2()
 end
 
 function ICT:PLAYERBANKSLOTS_CHANGED()
-    if timer then
-        timer:Cancel()
-    end
-    timer = C_Timer.NewTimer(0.5, ScanBank)
-end
-
-function ICT:PLAYERREAGENTBANKSLOTS_CHANGED()
     if timer then
         timer:Cancel()
     end
