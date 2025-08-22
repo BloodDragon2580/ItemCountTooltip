@@ -26,42 +26,50 @@ local function ScanBankBag(bag)
 end
 
 local isBankOpen, updateRequired
+
 local function ScanBank()
-    if isBankOpen then
-        updateRequired = false
-        wipe(temp)
+    if not isBankOpen then
+        updateRequired = true
+        return
+    end
 
-        -- Normale Bankslots
-        for bag = 6, GetNumBankSlots() + 5 do
-            ScanBankBag(bag)
-        end
+    -- Prüfen, ob die Bank-API geladen ist
+    if not C_Bank or not C_Bank.GetNumBankSlots then
+        C_Timer.After(0.1, ScanBank)
+        return
+    end
 
-        -- Hauptbankfach
-        ScanBankBag(-1)
+    updateRequired = false
+    wipe(temp)
 
-        -- Reagenzienbank
-        ScanBankBag(-3)
+    -- Normale Bankslots
+    for bag = 6, 5 + C_Bank.GetNumBankSlots() do
+        ScanBankBag(bag)
+    end
 
-        -- Banktaschen-Slots selbst
-        for _, slot in ipairs(bags) do
-            local info = C_Container.GetContainerItemInfo(-4, slot)
-            if info and info.itemID and info.hyperlink and info.iconFileID and info.quality then
-                if not temp[info.itemID] then
-                    temp[info.itemID] = {}
-                    temp[info.itemID][1] = 1
-                    temp[info.itemID][2] = string.match(info.hyperlink, "|h%[(.+)%]|h")
-                    temp[info.itemID][3] = "|T" .. info.iconFileID .. ":0|t"
-                    temp[info.itemID][4] = info.quality
-                else
-                    temp[info.itemID][1] = temp[info.itemID][1] + 1
-                end
+    -- Hauptbankfach
+    ScanBankBag(-1)
+
+    -- Reagenzienbank
+    ScanBankBag(-3)
+
+    -- Banktaschen-Slots selbst
+    for _, slot in ipairs(bags) do
+        local info = C_Container.GetContainerItemInfo(-4, slot)
+        if info and info.itemID and info.hyperlink and info.iconFileID and info.quality then
+            if not temp[info.itemID] then
+                temp[info.itemID] = {}
+                temp[info.itemID][1] = 1
+                temp[info.itemID][2] = string.match(info.hyperlink, "|h%[(.+)%]|h")
+                temp[info.itemID][3] = "|T" .. info.iconFileID .. ":0|t"
+                temp[info.itemID][4] = info.quality
+            else
+                temp[info.itemID][1] = temp[info.itemID][1] + 1
             end
         end
-
-        ICT:Save(temp, "bank")
-    else
-        updateRequired = true
     end
+
+    ICT:Save(temp, "bank")
 end
 
 function ICT:BANKFRAME_OPENED()
@@ -76,16 +84,12 @@ end
 local timer
 
 function ICT:BAG_UPDATE_DELAYED2()
-    if timer then
-        timer:Cancel()
-    end
+    if timer then timer:Cancel() end
     timer = C_Timer.NewTimer(0.5, ScanBank)
 end
 
 function ICT:PLAYERBANKSLOTS_CHANGED()
-    if timer then
-        timer:Cancel()
-    end
+    if timer then timer:Cancel() end
     timer = C_Timer.NewTimer(0.5, ScanBank)
 end
 
@@ -96,7 +100,7 @@ local function UpdateBankDB()
             if bank > 0 then
                 t[1] = bank
             else
-                t = nil
+                ICT_DB[ICT.realm][ICT.name]["bank"][id] = nil
             end
         end
     end
