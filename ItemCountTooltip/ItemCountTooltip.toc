@@ -1,6 +1,6 @@
 ## Interface: 110200
 ## Title: |cffd6266cItemCountTooltip|r
-## Version: 11.9
+## Version: 12.0
 ## Notes: ItemCountTooltip
 ## Author: BloodDragon2580
 ## SavedVariables: ICT_DB
