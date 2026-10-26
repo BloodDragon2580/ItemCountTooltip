@@ -78,8 +78,8 @@ end
 
 local function CountOnCurrentCharacter(id)
     local equipped = 0, 0, 0
-    local bags = GetItemCount(id)
-    local bank = GetItemCount(id, true) - bags
+    local bags = C_Item.GetItemCount(id)
+    local bank = C_Item.GetItemCount(id, true) - bags
     local result = {}
 
     if ICT_DB[ICT.realm][ICT.name]["equipped"][id] then

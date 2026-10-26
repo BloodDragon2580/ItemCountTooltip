@@ -95,7 +95,7 @@ end
 
 local function UpdateBankDB()
     for id, t in pairs(ICT_DB[ICT.realm][ICT.name]["bank"]) do
-        local bank = GetItemCount(id, true) - GetItemCount(id)
+        local bank = C_Item.GetItemCount(id, true) - C_Item.GetItemCount(id)
         if t[1] ~= bank then
             if bank > 0 then
                 t[1] = bank
